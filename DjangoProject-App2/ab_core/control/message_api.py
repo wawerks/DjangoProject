@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
+from django.db.models import Q
 import json
 from .models import Message
 import logging
@@ -48,11 +49,9 @@ def get_messages(request):
                 'message': 'User parameter is required'
             }, status=400)
 
-        # Get both sent and received messages
+        # Get messages where user is either sender or receiver using Q objects
         messages = Message.objects.filter(
-            sender=user
-        ).union(
-            Message.objects.filter(receiver=user)
+            Q(sender=user) | Q(receiver=user)
         ).order_by('-timestamp')
 
         return JsonResponse({

@@ -1,25 +1,21 @@
 {% if message.author == user.username %}
-<div class="message-row d-flex justify-content-end mb-4">
-    <div class="message-content">
-        <div class="d-flex justify-content-end mb-1">
-            <div class="small text-muted me-2">{{ message.timestamp|date:"g:i A" }}</div>
-            <div class="fw-bold">You</div>
+<div class="flex justify-end mb-4">
+    <div class="message-bubble bg-green-200 rounded-l-lg rounded-tr-lg p-4 max-w-[75%]">
+        <div class="flex justify-end mb-1">
+            <div class="text-sm text-gray-500 mr-2">{{ message.timestamp|date:"g:i A" }}</div>
+            <div class="font-bold">You</div>
         </div>
-        <div class="message-bubble sent">
-            {{ message.body }}
-        </div>
+        <span>{{ message.body }}</span>
     </div>
 </div>
 {% else %}
-<div class="message-row d-flex mb-4">
-    <div class="message-content">
-        <div class="d-flex mb-1">
-            <div class="fw-bold">{{ message.author }}</div>
-            <div class="small text-muted ms-2">{{ message.timestamp|date:"g:i A" }}</div>
+<div class="flex mb-4">
+    <div class="message-bubble bg-gray-200 rounded-r-lg rounded-tl-lg p-4 max-w-[75%]">
+        <div class="flex mb-1">
+            <div class="font-bold">{{ message.author }}</div>
+            <div class="text-sm text-gray-500 ml-2">{{ message.timestamp|date:"g:i A" }}</div>
         </div>
-        <div class="message-bubble received">
-            {{ message.body }}
-        </div>
+        <span>{{ message.body }}</span>
     </div>
 </div>
 {% endif %}

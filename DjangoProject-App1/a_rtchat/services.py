@@ -4,7 +4,7 @@ from django.conf import settings
 
 class MessageService:
     def __init__(self):
-        self.base_url = "http://localhost:8081"  # Updated to match App2's port
+        self.base_url = "http://localhost:8081"
 
     def store_message(self, sender, receiver, content):
         """Send message to App2 for storage"""

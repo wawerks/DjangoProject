@@ -51,27 +51,43 @@ class ChatroomConsumer(WebsocketConsumer):
             'timestamp': timezone.now()
         }
 
-        event = {
-            'type': 'message_handler',
-            'message': message
-        }
-        logger.info(f"Broadcasting message event: {event}")
-        
+        # Render message HTML for initial sender
+        html_sender = render_to_string('a_rtchat/message.html', {
+            'message': message,
+            'user': {'username': self.user.username}
+        })
+
+        # Render message HTML for receivers
+        html_receiver = render_to_string('a_rtchat/message.html', {
+            'message': message,
+            'user': {'username': ''}  # Empty username so it renders as received message
+        })
+
+        # Broadcast message to group
         async_to_sync(self.channel_layer.group_send)(
             self.chatroom_name,
-            event
+            {
+                'type': 'chat_message',
+                'message': json.dumps({
+                    'html': html_receiver,
+                    'html_sender': html_sender,
+                    'author': self.user.username
+                })
+            }
         )
 
     def message_handler(self, event):
         message = event['message']
         logger.info(f"Handling message event: {event}")
         
-        html = render_to_string('a_rtchat/message.html', {
-            'message': message,
-            'user': self.user
-        })
-        logger.info(f"Rendered message HTML for user {self.user.username}")
+        self.send(text_data=message)
+
+    def chat_message(self, event):
+        message_data = json.loads(event['message'])
         
-        self.send(text_data=json.dumps({
-            'html': html
-        }))
+        # If the current user is the sender, use the sender HTML
+        if self.user.username == message_data['author']:
+            message_data['html'] = message_data['html_sender']
+        
+        # Send message to WebSocket
+        self.send(text_data=json.dumps(message_data))
