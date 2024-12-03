@@ -2,10 +2,14 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-
+from pathlib import Path
 
 def main():
     """Run administrative tasks."""
+    # Add App 1's path to Python path
+    app1_path = str(Path(__file__).resolve().parent.parent.parent / 'DjangoProject-App1')
+    sys.path.append(app1_path)
+    
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ab_core.settings')
     try:
         from django.core.management import execute_from_command_line

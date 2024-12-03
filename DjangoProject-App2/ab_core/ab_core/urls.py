@@ -16,10 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls.static import static
+from django.conf import settings
 from control.views import index
 
 urlpatterns = [
-    path('', index, name='index'),  # Add root URL handler
+    path('', include('a_rtchat.urls')),
     path('admin/', admin.site.urls),
+    path('accounts/', include('allauth.urls')),
+    path('profile/', include('a_users.urls')),
     path('api/', include('control.urls')),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
