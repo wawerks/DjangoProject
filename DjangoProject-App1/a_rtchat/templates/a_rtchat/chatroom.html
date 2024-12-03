@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="flex flex-col h-screen">
+    <!-- Chat Header -->
+    <div class="bg-white border-b border-gray-200 px-4 py-2">
+        <h1 class="text-xl font-semibold">{{ chat_group.group_name }}</h1>
+    </div>
+
+    <!-- Chat Messages -->
+    <div class="flex-1 overflow-y-auto p-4 space-y-4" id="chat-messages">
+        {% for message in messages %}
+            {% include 'a_rtchat/message.html' with message=message %}
+        {% endfor %}
+    </div>
+
+    <!-- Chat Input -->
+    <div class="border-t border-gray-200 p-4 bg-white">
+        <form id="chat-form" class="space-y-2">
+            {{ form.username }}
+            <div class="flex space-x-2">
+                {{ form.body }}
+                <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-blue-700">
+                    Send
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const chatSocket = new WebSocket(
+        'ws://' + window.location.host + '/ws/chat/{{ chat_group.group_name }}/'
+    );
+
+    const messagesDiv = document.getElementById('chat-messages');
+    const chatForm = document.getElementById('chat-form');
+    const messageInput = document.getElementById('chat-message-input');
+    const usernameInput = document.getElementById('chat-username-input');
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        const messageDiv = document.createElement('div');
+        messageDiv.innerHTML = data.html;
+        messagesDiv.appendChild(messageDiv);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    };
+
+    chatForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const message = messageInput.value;
+        const username = usernameInput.value || 'Anonymous';
+        
+        if (message.trim()) {
+            chatSocket.send(JSON.stringify({
+                'body': message,
+                'username': username
+            }));
+            messageInput.value = '';
+        }
+    });
+
+    messageInput.focus();
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+</script>
+{% endblock %}
