@@ -106,7 +106,7 @@ CHANNEL_LAYERS = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': Path('C:/Users/princ.PRNSNNYO/OneDrive/Desktop/109NEW/DjangoProject/DjangoProject-App2/ab_core/db.sqlite3'),
+        'NAME': Path('C:/Users/Louis/OneDrive/Desktop/IT120/DjangoProject/DjangoProject-App2/ab_core/db.sqlite3'),
     }
 }
 
