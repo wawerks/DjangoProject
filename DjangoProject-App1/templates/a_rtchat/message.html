@@ -1,19 +1,24 @@
 {% if message.author == user.username %}
 <div class="flex justify-end mb-4">
-    <div class="message-bubble bg-green-200 rounded-l-lg rounded-tr-lg p-4 max-w-[75%]">
-        <div class="flex justify-end mb-1">
-            <div class="text-sm text-gray-500 mr-2">{{ message.timestamp|date:"g:i A" }}</div>
-            <div class="font-bold">You</div>
+    <!-- Sent Message -->
+    <div class="message-bubble bg-indigo-500 text-white rounded-l-lg rounded-tr-lg p-4 max-w-[75%] shadow-md">
+        <div class="flex justify-end items-center mb-1">
+            <div class="text-sm text-indigo-300 mr-2">{{ message.timestamp|date:"g:i A" }}</div>
+            <div class="font-semibold">You</div>
         </div>
-        <span>{{ message.body }}</span>
+        <span class="text-white">{{ message.body }}</span>
     </div>
 </div>
 {% else %}
 <div class="flex mb-4">
-    <div class="message-bubble bg-gray-200 rounded-r-lg rounded-tl-lg p-4 max-w-[75%]">
-        <div class="flex mb-1">
-            <div class="font-bold">{{ message.author }}</div>
-            <div class="text-sm text-gray-500 ml-2">{{ message.timestamp|date:"g:i A" }}</div>
+    <!-- Received Message -->
+    <div class="flex-shrink-0 mr-3">
+        <img src="{{ message.author.profile.avatar }}" alt="{{ message.author }}" class="w-8 h-8 rounded-full object-cover shadow-sm">
+    </div>
+    <div class="message-bubble bg-teal-200 text-gray-800 rounded-r-lg rounded-tl-lg p-4 max-w-[75%] shadow-md">
+        <div class="flex items-center mb-1">
+            <div class="font-semibold">{{ message.author }}</div>
+            <div class="text-sm text-teal-600 ml-2">{{ message.timestamp|date:"g:i A" }}</div>
         </div>
         <span>{{ message.body }}</span>
     </div>
