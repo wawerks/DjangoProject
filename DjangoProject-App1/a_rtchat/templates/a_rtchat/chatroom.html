@@ -2,68 +2,86 @@
 {% load static %}
 
 {% block content %}
-<div class="flex flex-col h-screen">
+<div class="flex flex-col h-full w-full bg-gray-900">
     <!-- Chat Header -->
-    <div class="bg-white border-b border-gray-200 px-4 py-2">
-        <h1 class="text-xl font-semibold">{{ chat_group.group_name }}</h1>
+    <div class="bg-gray-800 border-b border-gray-700 px-6 py-3">
+        <div class="flex items-center justify-between">
+            <h1 class="text-xl font-semibold text-white">{{ chat_group.group_name }}</h1>
+            <div class="text-emerald-400">
+                <span id="online-count" class="pr-1">3</span>online
+            </div>
+        </div>
     </div>
 
     <!-- Chat Messages -->
-    <div class="flex-1 overflow-y-auto p-4 space-y-4" id="chat-messages">
-        {% for message in messages %}
-            {% include 'a_rtchat/message.html' with message=message %}
-        {% endfor %}
+    <div class="flex-1 overflow-y-auto bg-gray-800" id="chat-messages">
+        <div class="max-w-none p-4 space-y-4">
+            {% for message in messages %}
+                {% include 'a_rtchat/message.html' with message=message %}
+            {% endfor %}
+        </div>
     </div>
 
     <!-- Chat Input -->
-    <div class="border-t border-gray-200 p-4 bg-white">
-        <form id="chat-form" class="space-y-2">
+    <div class="border-t border-gray-700 p-4 bg-gray-800">
+        <form id="chat-form" class="flex gap-3 max-w-none">
             {{ form.username }}
-            <div class="flex space-x-2">
-                {{ form.body }}
-                <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-blue-700">
-                    Send
-                </button>
+            <div class="flex-1">
+                {{ form.body|add_class:"w-full px-4 py-3 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400" }}
             </div>
+            <button type="submit" class="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200 flex items-center gap-2 whitespace-nowrap">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                </svg>
+                Send
+            </button>
         </form>
     </div>
 </div>
-{% endblock %}
 
-{% block extra_js %}
 <script>
     const chatSocket = new WebSocket(
         'ws://' + window.location.host + '/ws/chat/{{ chat_group.group_name }}/'
     );
 
-    const messagesDiv = document.getElementById('chat-messages');
+    const chatMessages = document.getElementById('chat-messages');
     const chatForm = document.getElementById('chat-form');
-    const messageInput = document.getElementById('chat-message-input');
-    const usernameInput = document.getElementById('chat-username-input');
+    const messageInput = document.querySelector('input[name="body"]');
+    const usernameInput = document.querySelector('input[name="username"]');
 
-    chatSocket.onmessage = function(e) {
-        const data = JSON.parse(e.data);
-        const messageDiv = document.createElement('div');
-        messageDiv.innerHTML = data.html;
-        messagesDiv.appendChild(messageDiv);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    };
+    // Scroll to bottom
+    function scrollToBottom() {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+    scrollToBottom();
 
+    // Handle form submission
     chatForm.addEventListener('submit', function(e) {
         e.preventDefault();
         const message = messageInput.value;
         const username = usernameInput.value || 'Anonymous';
-        
+
         if (message.trim()) {
+            // Send message
             chatSocket.send(JSON.stringify({
                 'body': message,
                 'username': username
             }));
             messageInput.value = '';
+            scrollToBottom();
         }
     });
 
-    messageInput.focus();
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    // Handle incoming messages
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        if (data.html) {
+            // Add message to chat
+            const messageElement = document.createElement('div');
+            messageElement.innerHTML = data.html;
+            chatMessages.appendChild(messageElement);
+            scrollToBottom();
+        }
+    };
 </script>
 {% endblock %}

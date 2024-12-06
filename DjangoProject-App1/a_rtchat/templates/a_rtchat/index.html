@@ -1,22 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-8">Chat Rooms</h1>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {% for group in chat_groups %}
-        <a href="{% url 'chatroom' group.group_name %}" class="block">
-            <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-                <h2 class="text-xl font-semibold mb-2">{{ group.group_name }}</h2>
-                <p class="text-gray-600">Join the conversation</p>
+<div class="min-h-screen bg-gray-100">
+    <div class="container mx-auto px-4 py-16">
+        <div class="max-w-2xl mx-auto text-center">
+            <h1>Welcome to Chat</h1>
+            <p class="mt-4 text-lg text-gray-600">Start chatting with others in real-time!</p>
+            <div class="mt-8">
+                <a href="{% url 'chat' %}" class="button">
+                    Join Chat Room
+                </a>
             </div>
-        </a>
-        {% empty %}
-        <div class="col-span-full text-center py-8">
-            <p class="text-gray-500">No chat rooms available.</p>
         </div>
-        {% endfor %}
     </div>
 </div>
 {% endblock %}

@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import ChatmessageCreateForm
@@ -97,3 +97,18 @@ def chat_view(request):
         'form': form,
         'user': request.user
     })
+
+def home_view(request):
+    return HttpResponse("<h1>Welcome to Chat</h1><a href='/chat/'>Join Chat</a>")
+
+def index_view(request):
+    # Create default public chat if it doesn't exist
+    ChatGroup.objects.get_or_create(
+        group_name="public-chat",
+        defaults={
+            'description': 'Public Chat Room'
+        }
+    )
+    
+    chat_groups = ChatGroup.objects.all()
+    return render(request, 'a_rtchat/index.html', {'chat_groups': chat_groups})
