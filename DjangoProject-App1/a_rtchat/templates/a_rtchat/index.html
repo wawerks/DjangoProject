@@ -1,15 +1,16 @@
-{% extends 'base.html' %}
+{% extends 'layouts/blank.html' %}
 
 {% block content %}
-<div class="min-h-screen bg-gray-100">
-    <div class="container mx-auto px-4 py-16">
+<div class="min-h-screen bg-gray-100 flex items-center justify-center">
+    <div class="container mx-auto px-4">
         <div class="max-w-2xl mx-auto text-center">
-            <h1>Welcome to Chat</h1>
-            <p class="mt-4 text-lg text-gray-600">Start chatting with others in real-time!</p>
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">{{ title }}</h1>
+            <p class="mt-4 text-lg text-gray-600">{{ description }}</p>
             <div class="mt-8">
-                <a href="{% url 'chat' %}" class="button">
+                <a href="{% url 'chat' %}" class="inline-block px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition duration-200">
                     Join Chat Room
                 </a>
+                <p class="mt-4 text-gray-600">Click the button above to enter the chat room!</p>
             </div>
         </div>
     </div>

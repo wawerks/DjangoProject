@@ -99,7 +99,20 @@ def chat_view(request):
     })
 
 def home_view(request):
-    return HttpResponse("<h1>Welcome to Chat</h1><a href='/chat/'>Join Chat</a>")
+    # Create default public chat if it doesn't exist
+    ChatGroup.objects.get_or_create(
+        group_name="public-chat",
+        defaults={
+            'description': 'Public Chat Room'
+        }
+    )
+    
+    context = {
+        'title': 'Welcome to Real-Time Chat',
+        'description': 'Join our chat room to start messaging in real-time!',
+        'chat_groups': ChatGroup.objects.all()
+    }
+    return render(request, 'a_rtchat/index.html', context)
 
 def index_view(request):
     # Create default public chat if it doesn't exist
