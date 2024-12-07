@@ -6,20 +6,33 @@ A secure, real-time chat application built with Django, featuring end-to-end enc
 
 - **Real-time Communication**
   - WebSocket-based chat using Django Channels
+  - REST API endpoints for secure message transmission
   - Instant message delivery
   - Group chat support
   - Typing indicators
 
 - **Security**
   - End-to-end encryption using Fernet
+  - Custom encryption middleware
+  - JWT-based authentication
+  - CORS protection
   - Secure user authentication
   - Protected WebSocket connections
   - CSRF protection
+
+- **REST API Features**
+  - Secure message transmission
+  - User management endpoints
+  - Group chat operations
+  - JWT authentication
+  - Rate limiting
+  - Request/Response encryption
 
 - **User Management**
   - User registration and authentication
   - Profile management
   - Session handling
+  - JWT token management
 
 - **Modern UI/UX**
   - Responsive design with Tailwind CSS
@@ -32,7 +45,7 @@ A secure, real-time chat application built with Django, featuring end-to-end enc
 The application follows a two-app architecture:
 
 ### App1 (Frontend)
-```
+```bash
 DjangoProject-App1/
 ├── a_core/          # Main project settings
 ├── a_rtchat/        # Chat application
@@ -41,7 +54,7 @@ DjangoProject-App1/
 ```
 
 ### App2 (Backend)
-```
+```bash
 DjangoProject-App2/
 └── ab_core/         # Backend API and storage
 ```
@@ -211,6 +224,34 @@ python manage.py runserver 8081
    - Verify Daphne is running
    - Check channel layer configuration
    - Ensure Redis is running (if using Redis channel layer)
+
+## 🔗 API Endpoints
+
+### Authentication
+- `POST /api/token/` - Obtain JWT token pair
+- `POST /api/token/refresh/` - Refresh JWT token
+
+### Users
+- `GET /api/users/` - List all users
+- `GET /api/users/{id}/` - Get user details
+
+### Chat Groups
+- `GET /api/groups/` - List all chat groups
+- `POST /api/groups/` - Create new chat group
+- `GET /api/groups/{id}/` - Get group details
+- `PUT /api/groups/{id}/` - Update group
+- `DELETE /api/groups/{id}/` - Delete group
+
+### Messages
+- `GET /api/groups/{id}/messages/` - List group messages
+- `POST /api/groups/{id}/messages/` - Send new message
+- `GET /api/groups/{id}/messages/{msg_id}/` - Get message details
+
+All API endpoints are protected with:
+- JWT authentication
+- Request/Response encryption
+- Rate limiting
+- CORS protection
 
 ## 💬 Usage
 
