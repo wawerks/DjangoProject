@@ -1,0 +1,8 @@
+<div class="flex w-full mt-2 space-x-3 max-w-md">
+    <div>
+        <div class="bg-gray-300 p-3 rounded-r-lg rounded-bl-lg">
+            <p class="text-sm">{{ message.body }}</p>
+        </div>
+        <span class="text-xs text-gray-500 leading-none">{{ message.username }} • {{ message.timestamp|date:'g:i A' }}</span>
+    </div>
+</div>

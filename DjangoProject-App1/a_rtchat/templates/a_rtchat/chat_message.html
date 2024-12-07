@@ -1,0 +1,44 @@
+{% if message.author == user %}
+<li class="flex justify-end mb-4">
+    <div class="bg-indigo-100 rounded-l-lg rounded-tr-lg p-4 max-w-[60%] shadow-md">
+        <span class="text-gray-800">{{message.body}}</span>
+        <div class="text-xs text-gray-500 mt-1 text-right">
+            {{ message.created|time:"H:i" }}
+        </div>
+    </div>
+    <div class="flex items-end">
+        <svg height="13" width="8">
+            <path fill="#e0e7ff" d="M6.3,10.4C1.5,8.7,0.9,5.5,0,0.2L0,13l5.2,0C7,13,9.6,11.5,6.3,10.4z"/>
+        </svg>
+    </div>
+</li>
+{% else %}
+<li class="mb-4">
+    <div class="flex justify-start">
+        <div class="flex items-start mr-2">
+            <a href="{% url 'profile' message.author.username %}" class="hover:opacity-80 transition-opacity">
+                <img class="w-10 h-10 rounded-full object-cover border-2 border-gray-700" src="{{ message.author.profile.avatar }}">
+            </a>
+        </div>
+        <div class="flex flex-col max-w-[60%]">
+            <div class="flex items-center mb-1">
+                <span class="text-white font-medium">{{ message.author.profile.name }}</span>
+                <span class="text-gray-400 text-sm ml-2">@{{message.author.username}}</span>
+            </div>
+            <div class="flex items-start">
+                <div>
+                    <svg height="13" width="8">
+                        <path fill="#374151" d="M2.8,13L8,13L8,0.2C7.1,5.5,6.5,8.7,1.7,10.4C-1.6,11.5,1,13,2.8,13z"></path>
+                    </svg>
+                </div>
+                <div class="bg-gray-700 p-4 rounded-r-lg rounded-tl-lg shadow-md">
+                    <span class="text-white">{{message.body}}</span>
+                    <div class="text-xs text-gray-400 mt-1">
+                        {{ message.created|time:"H:i" }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</li>
+{% endif %}

@@ -1,0 +1,92 @@
+{% extends 'layouts/blank.html' %}
+
+{% block content %}
+
+<h1 class="mb-4 text-3xl font-bold text-center text-white">
+    {% if onboarding %} Complete your Profile {% else %} Edit your Profile {% endif %}
+</h1>
+
+<!-- Profile Section -->
+<div class="text-center flex flex-col items-center bg-gray-800 p-6 rounded-3xl shadow-lg transform transition-all duration-300 hover:scale-105 max-w-md mx-auto mt-6">
+    <img id="avatar" class="w-32 h-32 rounded-full object-cover my-4 shadow-xl border-4 border-white transition-transform duration-300 hover:scale-110" src="{{ user.profile.avatar }}" />
+    <div class="text-center max-w-md">
+        <h1 id="displayname" class="text-2xl font-semibold text-white">{{ user.profile.displayname|default:"" }}</h1>
+        <div class="text-gray-400 mb-2 -mt-3">@{{ user.username }}</div>
+    </div>
+</div>
+
+<!-- Profile Form -->
+<form method="POST" enctype="multipart/form-data" class="bg-gray-800 p-6 rounded-3xl shadow-lg transform transition-all duration-300 hover:scale-105 mt-6 mx-auto max-w-md">
+    {% csrf_token %}
+
+    <!-- File Upload Section -->
+    <div class="flex flex-col items-center mb-4">
+        {{ form.image }}
+        <label for="profile-image-upload" class="cursor-pointer bg-indigo-700 text-white py-2 px-4 rounded-lg shadow-md hover:bg-indigo-800 transition-all duration-300 flex items-center justify-center gap-2">
+            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            Choose Profile Picture
+        </label>
+        <span id="file-name" class="mt-2 text-gray-300">No file selected</span>
+    </div>
+
+    <!-- Other form fields -->
+    <div class="space-y-4">
+        <div class="form-group">
+            <label for="id_displayname" class="block text-sm font-medium text-gray-300 mb-1">Display Name</label>
+            {{ form.displayname }}
+        </div>
+        <div class="form-group">
+            <label for="id_info" class="block text-sm font-medium text-gray-300 mb-1">Bio</label>
+            {{ form.info }}
+        </div>
+    </div>
+
+    <button type="submit" class="mt-4 w-full py-3 px-5 bg-indigo-700 text-white rounded-lg shadow-lg hover:shadow-2xl focus:outline-none transition duration-300 ease-in-out transform hover:scale-105">
+        Submit
+    </button>
+
+    {% if onboarding %}
+    <a class="button button-gray ml-1 mt-4 block text-center py-3 px-5 rounded-lg bg-gray-700 text-gray-300 hover:bg-gray-600 focus:outline-none transition duration-300 ease-in-out transform hover:scale-105" href="{% url 'home' %}">Skip</a>
+    {% else %}
+    <a class="button button-gray ml-1 mt-4 block text-center py-3 px-5 rounded-lg bg-gray-600 text-gray-300 hover:bg-gray-500 focus:outline-none transition duration-300 ease-in-out transform hover:scale-105" href="{{ request.META.HTTP_REFERER }}">Cancel</a>
+    {% endif %}
+</form>
+
+<script>
+    // File upload handling
+    document.getElementById('profile-image-upload').addEventListener('change', function() {
+        const file = this.files[0];
+        const fileNameElement = document.getElementById('file-name');
+        const avatarPreview = document.getElementById('avatar');
+        
+        if (file) {
+            fileNameElement.textContent = file.name;
+            
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    avatarPreview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                fileNameElement.textContent = 'Please select an image file';
+            }
+        } else {
+            fileNameElement.textContent = 'No file selected';
+        }
+    });
+
+    // Display name update
+    const displayNameInput = document.getElementById('id_displayname');
+    const displayNameOutput = document.getElementById('displayname');
+
+    if (displayNameInput && displayNameOutput) {
+        displayNameInput.addEventListener('input', (event) => {
+            displayNameOutput.innerText = event.target.value || '';
+        });
+    }
+</script>
+
+{% endblock %}
