@@ -70,6 +70,7 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware',
     'django_htmx.middleware.HtmxMiddleware',
     'a_core.middleware.EncryptionMiddleware',
+    'a_rtchat.middleware.App2StatusMiddleware',  # Add App2 status check middleware
 ]
 
 AUTHENTICATION_BACKENDS = [
