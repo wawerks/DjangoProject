@@ -10,138 +10,217 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
-            height: 100%;
+            font-family: 'Arial', sans-serif;
+            scroll-behavior: smooth; /* Enables smooth scrolling */
         }
 
-        /* Container Setup */
-        .container {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh; /* Ensures full page height */
-        }
-
-        /* Main Content */
-        .content {
-            flex-grow: 1; /* Ensures content takes up remaining space */
+        /* Home Section Styling */
+        .home {
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(to right, #f0f7ff, #e0e8f8);
-            padding: 20px;
+            background-color: #D1D5DB; /* Grey background */
+            height: 100vh; /* Full viewport height */
+            padding: 40px 20px;
         }
 
-        /* Card Design */
         .card {
             text-align: center;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        /* Card Hover Effect */
         .card:hover {
             transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
         }
 
-        /* Title and Description Styling */
-        .title {
+        .card h1 {
             font-size: 2.5em;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 10px;
+            color: #333333;
+            margin-bottom: 15px;
         }
 
-        .description {
+        .card p {
             font-size: 1.2em;
-            color: #666;
-            margin-bottom: 20px;
+            color: #6B7280;
         }
 
-        /* Button and Hint */
-        .actions {
-            margin-top: 20px;
-        }
-
-        .button {
+        .card a {
             display: inline-block;
-            padding: 10px 20px;
-            background: linear-gradient(to right, #4a90e2, #5a68d8);
+            margin-top: 20px;
+            padding: 12px 30px;
+            background-color: #6B7280;
             color: white;
             text-decoration: none;
             font-weight: bold;
-            border-radius: 5px;
-            transition: background 0.3s, transform 0.2s;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.3s;
         }
 
-        .button:hover {
-            background: linear-gradient(to right, #357ac9, #4b4ed8);
-            transform: translateY(-3px);
+        .card a:hover {
+            background-color: #4B5563;
+            transform: translateY(-5px);
         }
 
-        .hint {
-            margin-top: 10px;
-            color: #777;
+        /* Section Styling */
+        .section {
+            padding: 60px 20px;
+            text-align: center;
+            background: #F3F4F6;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        .section h2 {
+            font-size: 2em;
+            color: #333333;
+            margin-bottom: 15px;
+        }
+
+        .section p {
+            font-size: 1.1em;
+            color: #6B7280;
+        }
+
+        /* Developer Cards */
+        .developer-card {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 200px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+            position: relative; /* Enables positioning for the hover effect */
+            overflow: hidden;
+        }
+
+        .developer-card img {
+            width: 100%;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .developer-card:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            background-color: #F3F4F6; /* Change background color on hover */
+        }
+
+        .developer-card p {
             font-size: 0.9em;
+            color: #6B7280;
+            transition: opacity 0.3s;
+        }
+
+        .developer-card:hover p {
+            color: #333333; /* Change text color on hover */
         }
 
         /* Footer Section */
         .footer {
-            background: white;
+            background: #D1D5DB;
             padding: 15px 20px;
             text-align: center;
-            border-top: 1px solid #ddd;
+            border-top: 1px solid #E5E7EB;
         }
 
         .footer p {
             margin: 0;
-            color: #777;
+            color: #6B7280;
             font-size: 0.9em;
-        }
-
-        .footer .links {
-            margin-top: 10px;
         }
 
         .footer .links a {
             margin: 0 10px;
-            color: #4a90e2;
+            color: #6B7280;
             text-decoration: none;
             font-size: 0.9em;
             transition: color 0.3s;
         }
 
         .footer .links a:hover {
-            color: #357ac9;
+            color: #333333;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Main Content -->
-        <div class="content">
-            <div class="card">
-                <h1 class="title">{{ title }}</h1>
-                <p class="description">{{ description }}</p>
-                <div class="actions">
-                    <a href="{% url 'chat' %}" class="button">Join Chat Room</a>
-                    <p class="hint">Click the button above to enter the chat room!</p>
-                </div>
+    {% load static %}
+    <!-- Home Section -->
+    <div id="home" class="home">
+        <div class="card">
+            <h1>{{ title }}</h1>
+            <p>{{ description }}</p>
+            <a href="{% url 'chat' %}">Join Chat Room</a>
+        </div>
+    </div>
+
+    <!-- About Us Section -->
+    <div id="about" class="section">
+        <h2>About Us</h2>
+        <p>We are dedicated to creating user-friendly and reliable chat applications to connect people globally.</p>
+    </div>
+
+    <!-- Web Developers Section -->
+    <div id="developers" class="section">
+        <h2>Web Developers</h2>
+        <p>Our team consists of talented developers passionate about innovation and technology.</p>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px 0;">
+            <!-- Developer Cards -->
+            <div class="developer-card">
+                <img src="{% static 'images/221-01119-Prince.png' %}" alt="Developer 1">
+                <h3>Prince Niño Antigo</h3>
+                <p>Email: princenino.antigo@carsu.edu.ph</p>
+                <p>Contact: 09816550765</p>
+            </div>
+
+            <div class="developer-card">
+                <img src="{% static 'images/221-00379.png' %}" alt="Developer 2">
+                <h3>Omaimah Ameril</h3>
+                <p>Email: omaimah.ameril@carsu.edu.ph</p>
+                <p>Contact: 09563104232</p>
+            </div>
+
+            <div class="developer-card">
+                <img src="{% static 'images/221-00740-Rhowin.png' %}" alt="Developer 3">
+                <h3>Rhowin Jhon Lumales</h3>
+                <p>Email: rjhonlumales11@gmail.com</p>
+                <p>Contact: 09516565560</p>
+            </div>
+
+            <div class="developer-card">
+                <img src="{% static 'images/221-01669.png' %}" alt="Developer 4">
+                <h3>Jeseca A. Ruelan</h3>
+                <p>Email: jesecaruelan@gmail.com</p>
+                <p>Contact: 09489635571</p>
+            </div>
+
+            <div class="developer-card">
+                <img src="{% static 'images/221-01630-Louis.jpg' %}" alt="Developer 5">
+                <h3>Louis Rafael E. Quiñones</h3>
+                <p>Email: quinoneslouisrafael@gmail.com</p>
+                <p>Contact: 09954144476</p>
             </div>
         </div>
-
-        <!-- Footer -->
-        <footer class="footer">
-            <p>&copy; {{ current_year }} My Application. All rights reserved.</p>
-            <div class="links">
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="https://github.com/wawerks/DjangoProject.git" target="_blank">GitHub</a>
-            </div>
-        </footer>
     </div>
+
+    <!-- Contact Us Section -->
+    <div id="contact" class="section">
+        <h2>Contact Us</h2>
+        <p>Have questions or feedback? Reach out to us at <a href="mailto:support@example.com">support@example.com</a>.</p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; {{ current_year }} My Application. All rights reserved.</p>
+        <div class="links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="https://github.com/wawerks/DjangoProject.git" target="_blank">GitHub</a>
+        </div>
+    </footer>
 </body>
 </html>

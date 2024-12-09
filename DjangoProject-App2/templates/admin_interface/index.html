@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .message-list {
+            margin-top: 30px;
+        }
+        .message {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Message App</h1>
+
+        <!-- Form to Send a Message -->
+        <div class="form-group">
+            <label for="sender">Sender:</label>
+            <input type="text" id="sender" placeholder="Enter your username">
+        </div>
+        <div class="form-group">
+            <label for="receiver">Receiver:</label>
+            <input type="text" id="receiver" placeholder="Enter receiver's username">
+        </div>
+        <div class="form-group">
+            <label for="content">Message:</label>
+            <textarea id="content" placeholder="Enter your message"></textarea>
+        </div>
+        <button onclick="sendMessage()">Send Message</button>
+        <div id="message-status" class="error"></div>
+
+        <!-- Form to Retrieve Messages -->
+        <h2>Retrieve Messages</h2>
+        <div class="form-group">
+            <label for="user">Username:</label>
+            <input type="text" id="user" placeholder="Enter your username">
+        </div>
+        <button onclick="getMessages()">Get Messages</button>
+
+        <!-- Display Messages -->
+        <div class="message-list" id="message-list"></div>
+    </div>
+
+    <script>
+        const API_BASE_URL = '/'; // Adjust if necessary
+
+        async function sendMessage() {
+            const sender = document.getElementById('sender').value;
+            const receiver = document.getElementById('receiver').value;
+            const content = document.getElementById('content').value;
+            const statusDiv = document.getElementById('message-status');
+            statusDiv.textContent = '';
+
+            try {
+                const response = await fetch(`${API_BASE_URL}messages/store/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ sender, receiver, content }),
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    alert('Message sent successfully!');
+                } else {
+                    statusDiv.textContent = data.message || 'Error sending message.';
+                }
+            } catch (error) {
+                statusDiv.textContent = 'Failed to send message.';
+                console.error(error);
+            }
+        }
+
+        async function getMessages() {
+            const user = document.getElementById('user').value;
+            const messageListDiv = document.getElementById('message-list');
+            messageListDiv.innerHTML = '';
+
+            try {
+                const response = await fetch(`${API_BASE_URL}messages/?user=${user}`);
+                const data = await response.json();
+
+                if (response.ok) {
+                    data.messages.forEach(msg => {
+                        const msgDiv = document.createElement('div');
+                        msgDiv.classList.add('message');
+                        msgDiv.innerHTML = `
+                            <p><strong>From:</strong> ${msg.sender}</p>
+                            <p><strong>To:</strong> ${msg.receiver}</p>
+                            <p><strong>Message:</strong> ${msg.content}</p>
+                            <p><em>${msg.timestamp}</em></p>
+                        `;
+                        messageListDiv.appendChild(msgDiv);
+                    });
+                } else {
+                    alert(data.message || 'Error retrieving messages.');
+                }
+            } catch (error) {
+                alert('Failed to retrieve messages.');
+                console.error(error);
+            }
+        }
+    </script>
+</body>
+</html>
