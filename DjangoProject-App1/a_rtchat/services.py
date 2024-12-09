@@ -22,7 +22,7 @@ class MessageService:
             response.raise_for_status()  # Raise error for bad status codes
             return response.json()
         except requests.exceptions.ConnectionError:
-            logger.error(f"Connection error while storing message. Is App2 running on {self.base_url}?")
+            logger.error(f"Connection error while storing message. App2 is not running{self.base_url}?")
             return {'status': 'error', 'message': 'Connection failed'}
         except requests.exceptions.Timeout:
             logger.error("Timeout while storing message")

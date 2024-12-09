@@ -18,10 +18,10 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
-from control.views import index
+from control.views import landing_page
 
 urlpatterns = [
-    path('', index, name='index'),
+    path('', include('control.urls')),  # Directs the root URL to the control app
     path('admin/', admin.site.urls),
     path('api/', include('control.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
