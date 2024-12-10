@@ -1,29 +1,44 @@
 {% extends 'layouts/blank.html' %}
 
 {% block content %} 
-
 <wrapper class="block max-w-2xl mx-auto my-10 px-6">
     <div id="chat_window" class="h-[45rem] flex flex-col bg-gray-800 rounded-2xl shadow-2xl relative p-1">
         <div class="flex justify-center text-emerald-400 bg-gray-800 p-2 sticky top-0 z-10">
             <span id="online-count" class="pr-1">3</span>online
         </div>
-        <div id='chat_container' class="overflow-y-auto grow">
-            <ul id='chat_messages' class="flex flex-col justify-end gap-2 p-4">
+        <div id='chat_container' class="overflow-y-auto grow bg-white rounded-xl p-4" data-username="{{ user.username }}">
+            <div id='chat_messages' class="flex flex-col space-y-4">
                 {% for message in chat_messages reversed %}
-                {% include 'a_rtchat/chat_message.html' %}
+                    {% include 'a_rtchat/message.html' with message=message user=user %}
                 {% endfor %}
-            </ul>
+            </div>
         </div>
         <div class="sticky bottom-0 z-10 p-2 bg-gray-800">
             <div class="flex items-center rounded-xl px-2 py-2">
                 <form id="chat_message_form" class="w-full"
-                hx-ext="ws"
-                ws-connect="/ws/chatroom/public-chat"
-                ws-send
-                _="on htmx:wsAfterSend reset () me"
-                >
+                    hx-ext="ws"
+                    ws-connect="/ws/chatroom/public-chat"
+                    ws-send
+                    _="on htmx:wsAfterSend reset () me">
                     {% csrf_token %}
-                    {{ form }}
+                    
+                    <!-- Flex container for input and button -->
+                    <div class="flex items-center w-full space-x-2">
+                        <!-- Message Input Field: Takes full width of available space -->
+                        <div class="flex-grow">
+                            {{ form }}
+                        </div>
+                        
+                        <!-- Send Button with Paper Plane Icon -->
+                        <button type="submit" class="p-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 focus:outline-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                            </svg>
+                            
+                        </button>
+                        
+                        
+                    </div>
                 </form>
             </div>
         </div>
@@ -31,14 +46,32 @@
 </wrapper>
 {% endblock %}
 
-
 {% block javascript %}
 <script>
-    function scrollToBottom(){
+    // Function to scroll chat to bottom
+    function scrollToBottom() {
         const container = document.getElementById('chat_container');
         container.scrollTop = container.scrollHeight;
     }
-    scrollToBottom()
 
+    // Scroll to bottom on page load
+    window.onload = scrollToBottom;
+
+    // Handle WebSocket message received
+    document.body.addEventListener('htmx:wsAfterMessage', function(event) {
+        const data = JSON.parse(event.detail.message);
+        const chatMessages = document.getElementById('chat_messages');
+        
+        // Create a temporary div to hold the message HTML
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = data.html;
+        
+        // Add the message to the chat
+        const messageDiv = tempDiv.firstElementChild;
+        chatMessages.appendChild(messageDiv);
+        
+        // Scroll to bottom
+        scrollToBottom();
+    });
 </script>
 {% endblock %}

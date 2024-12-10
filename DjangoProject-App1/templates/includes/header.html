@@ -31,6 +31,9 @@
             </li>
             
             {% else %}
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'home' %}">About</a></li>
+            <li><a href="{% url 'home' %}">Contact</a></li>
             <li><a href="{% url 'account_login' %}">Login</a></li>
             <li><a href="{% url 'account_signup' %}?next={% url 'profile-onboarding' %}">Signup</a></li>
             {% endif %}

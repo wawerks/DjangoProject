@@ -122,7 +122,7 @@ SECURE_HSTS_PRELOAD = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': Path('c:/Users/Rhowin/Desktop/120 Project/DjangoProject-App2/ab_core/db.sqlite3'),
+        'NAME': Path('C:/Users/Rhowin/Desktop/120 Project/DjangoProject/DjangoProject-App2/ab_core/db.sqlite3'),
     }
 }
 
