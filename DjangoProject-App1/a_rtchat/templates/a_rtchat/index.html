@@ -85,6 +85,59 @@
             color: #6B7280;
         }
 
+        /* About Section Styling */
+        .about {
+            background-color: #ffffff;
+            padding: 60px 20px;
+            text-align: center;
+            color: #333333;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        /* About Section Animation */
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .about h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease-out 0.5s forwards;
+        }
+
+        .about p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #6B7280;
+            animation: fadeInUp 1s ease-out 1s forwards;
+        }
+
+        .about ul {
+            list-style-type: none;
+            padding: 0;
+            color: #6B7280;
+            font-size: 1.1em;
+            animation: fadeInUp 1s ease-out 1.5s forwards;
+        }
+
+        .about ul li {
+            margin-bottom: 10px;
+        }
+
+        .about img {
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+            margin-top: 20px;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 2s forwards;
+        }
+
         /* Developer Cards */
         .developer-card {
             background: #ffffff;
@@ -145,6 +198,41 @@
         .footer .links a:hover {
             color: #333333;
         }
+
+        /* About Section Cards */
+        .about-card {
+            margin: 20px 0;
+            padding: 25px;
+            background-color: #f9fafb;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .about-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            background-color: #e5e7eb;
+        }
+
+        .about-card h3 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .about-card p {
+            font-size: 1.1em;
+            color: #6B7280;
+        }
+
+        .about-card ul {
+            padding-left: 20px;
+            color: #6B7280;
+            font-size: 1.1em;
+        }
+
+        .about-card ul li {
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -158,10 +246,57 @@
         </div>
     </div>
 
-    <!-- About Us Section -->
-    <div id="about" class="section">
+    <!-- About Section -->
+    <div id="about" class="about">
         <h2>About Us</h2>
-        <p>We are dedicated to creating user-friendly and reliable chat applications to connect people globally.</p>
+
+        <!-- About Us Card -->
+        <div class="about-card">
+            <h3>Welcome to Realtime Chat</h3>
+            <p>Welcome to Real-time Chat, where communication meets simplicity, speed, and reliability in the world of real-time messaging. Our goal is to revolutionize the way individuals, businesses, and teams connect, collaborate, and communicate in an increasingly fast-paced digital world.</p>
+            <p>At Real-time Chat, we understand that communication is at the heart of every relationship, whether it’s personal or professional. That’s why we’ve designed an intuitive and powerful chat platform to bridge the gap between distance and time, enabling seamless real-time interactions.</p>
+            <p>We’ve built Real-time Chat with both individuals and businesses in mind, ensuring that no matter what your needs are, we have the tools and features to enhance your messaging experience. From simple one-on-one chats to large group conversations, file sharing, and more, our app empowers you to stay connected with the people who matter most, wherever you are.</p>
+        </div>
+
+        <!-- Our Mission Card -->
+        <div class="about-card">
+            <h3>Our Mission</h3>
+            <p>Our mission is to bring people closer together by offering a simple, secure, and high-quality chat experience. Whether you’re working remotely, collaborating with colleagues, or just catching up with friends and family, Real-time Chat is designed to be your go-to platform for all your communication needs. We believe that communication should be effortless, and we’ve made it our goal to create an environment that fosters meaningful conversations, collaboration, and connection.</p>
+        </div>
+
+        <!-- Key Features Card -->
+        <div class="about-card">
+            <h3>Key Features That Set Us Apart</h3>
+            <ul>
+                <li>✅ Real-Time Messaging</li>
+                <li>✅ Multimedia Sharing</li>
+                <li>✅ Group Conversations</li>
+                <li>✅ Security & Privacy</li>
+                <li>✅ Cross-Platform Support</li>
+                <li>✅ Customization</li>
+                <li>✅ Real-Time Notifications</li>
+            </ul>
+        </div>
+
+        <!-- Our Values Card -->
+        <div class="about-card">
+            <h3>Our Values</h3>
+            <p>At Real-time Chat, we believe in the power of simplicity, security, and user-centric design. Our app was created with the following core values in mind:</p>
+            <ul>
+                <li>✅ User Experience</li>
+                <li>✅ Innovation</li>
+                <li>✅ Community</li>
+                <li>✅ Security</li>
+            </ul>
+        </div>
+
+        <!-- Looking to the Future Card -->
+        <div class="about-card">
+            <h3>Looking to the Future</h3>
+            <p>As we continue to grow, our focus remains on building a platform that meets your needs. We’re excited about the possibilities and innovations that lie ahead, and we are committed to continuously enhancing the Real-time Chat experience. Our team is dedicated to making sure that Realtime Chat evolves with you, providing cutting-edge features while always keeping your privacy and security at the forefront.</p>
+            <p>Thank you for choosing Real-time Chat. Whether you’re connecting with loved ones or collaborating with your team, we’re proud to be part of your communication journey. We can’t wait to see how Realtime Chat will help you stay connected in ways that matter.</p>
+        </div>
+
     </div>
 
     <!-- Web Developers Section -->
@@ -194,8 +329,8 @@
             <div class="developer-card">
                 <img src="{% static 'images/221-01669.png' %}" alt="Developer 4">
                 <h3>Jeseca A. Ruelan</h3>
-                <p>Email: jesecaruelan@gmail.com</p>
-                <p>Contact: 09489635571</p>
+                <p>Email: jesecaruela2022@gmail.com</p>
+                <p>Contact: 09153308691</p>
             </div>
 
             <div class="developer-card">
@@ -207,20 +342,14 @@
         </div>
     </div>
 
-    <!-- Contact Us Section -->
-    <div id="contact" class="section">
-        <h2>Contact Us</h2>
-        <p>Have questions or feedback? Reach out to us at <a href="mailto:support@example.com">support@example.com</a>.</p>
-    </div>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <p>&copy; {{ current_year }} My Application. All rights reserved.</p>
+    <!-- Footer Section -->
+    <div class="footer">
+        <p>2024 © All Rights Reserved</p>
         <div class="links">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-            <a href="https://github.com/wawerks/DjangoProject.git" target="_blank">GitHub</a>
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#developers">Team</a>
         </div>
-    </footer>
+    </div>
 </body>
 </html>
