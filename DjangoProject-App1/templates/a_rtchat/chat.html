@@ -21,7 +21,22 @@
                     ws-send
                     _="on htmx:wsAfterSend reset () me">
                     {% csrf_token %}
-                    {{ form }}
+                    
+                    <!-- Flex container for input and button -->
+                    <div class="flex items-center w-full space-x-2">
+                        <!-- Message Input Field: Takes full width of available space -->
+                        <div class="flex-grow">
+                            {{ form }}
+                        </div>
+                        
+                        <!-- Send Button with Paper Plane Icon -->
+                        <button type="submit" class="p-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 focus:outline-none">
+                            <!-- Heroicons Paper Plane Icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M10 18a1 1 0 01-1-1V6.414l-4.707 4.707a1 1 0 11-1.414-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 11-1.414 1.414L11 6.414V17a1 1 0 01-1 1z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
