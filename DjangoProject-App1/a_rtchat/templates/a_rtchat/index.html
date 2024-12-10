@@ -199,40 +199,96 @@
             color: #333333;
         }
 
-        /* About Section Cards */
-        .about-card {
-            margin: 20px 0;
-            padding: 25px;
-            background-color: #f9fafb;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
+        .about {
+            background-color: #ffffff;
+            padding: 40px 20px;
+            text-align: center;
         }
 
-        .about-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-            background-color: #e5e7eb;
+        .about h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
         }
 
-        .about-card h3 {
-            font-size: 1.8em;
-            margin-bottom: 15px;
+        /* About Cards Layout */
+        .about-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
         }
 
-        .about-card p {
-            font-size: 1.1em;
-            color: #6B7280;
-        }
+       /* About Grid Layout */
+.about-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
 
-        .about-card ul {
-            padding-left: 20px;
-            color: #6B7280;
-            font-size: 1.1em;
-        }
+/* About Centered Section */
+.about-center {
+    text-align: center;
+    margin-top: 40px;
+}
 
-        .about-card ul li {
-            margin-bottom: 10px;
-        }
+/* About Card Styling */
+.about-card {
+    background: #f9fafb;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: calc(50% - 20px); /* Two cards per row */
+    max-width: 500px;
+    box-sizing: border-box;
+    text-align: left;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.about-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.about-card h3 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+}
+
+.about-card p, .about-card ul {
+    font-size: 1em;
+    color: #6B7280;
+    margin-bottom: 10px;
+}
+
+.about-card ul {
+    list-style: disc;
+    padding-left: 20px;
+}
+
+/* Center the last line for "Looking to the Future" */
+.about-center h3 {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.about-center p {
+    font-size: 1.1em;
+    color: #6B7280;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .about-card {
+        width: 100%;
+    }
+
+    .about-grid {
+        flex-direction: column;
+    }
+}
+
     </style>
 </head>
 <body>
@@ -247,24 +303,19 @@
     </div>
 
     <!-- About Section -->
-    <div id="about" class="about">
-        <h2>About Us</h2>
-
-        <!-- About Us Card -->
+<div id="about" class="about">
+    <h2>About Us</h2>
+    <div class="about-grid">
         <div class="about-card">
             <h3>Welcome to Realtime Chat</h3>
             <p>Welcome to Real-time Chat, where communication meets simplicity, speed, and reliability in the world of real-time messaging. Our goal is to revolutionize the way individuals, businesses, and teams connect, collaborate, and communicate in an increasingly fast-paced digital world.</p>
-            <p>At Real-time Chat, we understand that communication is at the heart of every relationship, whether it’s personal or professional. That’s why we’ve designed an intuitive and powerful chat platform to bridge the gap between distance and time, enabling seamless real-time interactions.</p>
-            <p>We’ve built Real-time Chat with both individuals and businesses in mind, ensuring that no matter what your needs are, we have the tools and features to enhance your messaging experience. From simple one-on-one chats to large group conversations, file sharing, and more, our app empowers you to stay connected with the people who matter most, wherever you are.</p>
         </div>
-
-        <!-- Our Mission Card -->
         <div class="about-card">
             <h3>Our Mission</h3>
-            <p>Our mission is to bring people closer together by offering a simple, secure, and high-quality chat experience. Whether you’re working remotely, collaborating with colleagues, or just catching up with friends and family, Real-time Chat is designed to be your go-to platform for all your communication needs. We believe that communication should be effortless, and we’ve made it our goal to create an environment that fosters meaningful conversations, collaboration, and connection.</p>
+            <p>Our mission is to bring people closer together by offering a simple, secure, and high-quality chat experience. Whether you’re working remotely, collaborating with colleagues, or just catching up with friends and family, Real-time Chat is designed to be your go-to platform for all your communication needs.</p>
         </div>
-
-        <!-- Key Features Card -->
+    </div>
+    <div class="about-grid">
         <div class="about-card">
             <h3>Key Features That Set Us Apart</h3>
             <ul>
@@ -277,27 +328,21 @@
                 <li>✅ Real-Time Notifications</li>
             </ul>
         </div>
-
-        <!-- Our Values Card -->
         <div class="about-card">
             <h3>Our Values</h3>
-            <p>At Real-time Chat, we believe in the power of simplicity, security, and user-centric design. Our app was created with the following core values in mind:</p>
             <ul>
                 <li>✅ User Experience</li>
                 <li>✅ Innovation</li>
-                <li>✅ Community</li>
                 <li>✅ Security</li>
             </ul>
         </div>
-
-        <!-- Looking to the Future Card -->
-        <div class="about-card">
-            <h3>Looking to the Future</h3>
-            <p>As we continue to grow, our focus remains on building a platform that meets your needs. We’re excited about the possibilities and innovations that lie ahead, and we are committed to continuously enhancing the Real-time Chat experience. Our team is dedicated to making sure that Realtime Chat evolves with you, providing cutting-edge features while always keeping your privacy and security at the forefront.</p>
-            <p>Thank you for choosing Real-time Chat. Whether you’re connecting with loved ones or collaborating with your team, we’re proud to be part of your communication journey. We can’t wait to see how Realtime Chat will help you stay connected in ways that matter.</p>
-        </div>
-
     </div>
+    <div class="about-center">
+        <h3>Looking to the Future</h3>
+        <p>As we continue to grow, our focus remains on building a platform that meets your needs. We’re excited about the possibilities and innovations that lie ahead, and we are committed to continuously enhancing the Real-time Chat experience.</p>
+    </div>
+</div>
+
 
     <!-- Web Developers Section -->
     <div id="developers" class="section">
