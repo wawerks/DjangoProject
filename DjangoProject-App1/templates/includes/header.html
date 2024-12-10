@@ -1,38 +1,72 @@
 {% load static %}
-<header class="flex items-center justify-between bg-gray-800 h-20 px-8 text-white sticky top-0 z-40">
-    <div>
-        <a class="flex items-center gap-2" href="/">
-            <img class="h-6" src="{% static 'images/logo.svg' %}" alt="Logo"/>
-            <span class="text-lg font-bold">Real-Time Chat</span>
+<header class="flex items-center justify-between bg-gray-900 h-16 px-8 text-white sticky top-0 z-40 shadow-lg">
+    <!-- Logo Section -->
+    <div class="flex items-center gap-4">
+        <a class="flex items-center gap-2" href="/" aria-label="Homepage">
+            <img class="h-8" src="{% static 'images/logo.svg' %}" alt="Logo" />
+            <span class="text-xl font-bold">Real-Time Chat</span>
         </a>
     </div>
-    <nav class="block relative">
-        <ul class="navitems flex items-center justify-center h-full">
+
+    <!-- Navigation Section -->
+    <nav class="relative">
+        <!-- Mobile Menu Toggle Button -->
+        <button
+            @click="mobileMenuOpen = !mobileMenuOpen"
+            class="lg:hidden flex items-center gap-2 text-white p-2 rounded-lg hover:bg-gray-700"
+            aria-label="Toggle menu"
+        >
+            <img class="h-6" src="https://img.icons8.com/small/32/ffffff/menu.png" alt="Menu" />
+        </button>
+
+        <!-- Navigation Links -->
+        <ul
+            :class="mobileMenuOpen ? 'block' : 'hidden'"
+            class="lg:flex lg:items-center lg:gap-6 lg:static absolute top-full left-0 w-full bg-gray-900 lg:bg-transparent text-white lg:flex-row flex-col z-30"
+        >
             {% if request.user.is_authenticated %}
-            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'home' %}" class="hover:text-gray-300 transition duration-300 py-2 px-4 rounded-md">Home</a></li>
+
+            <!-- Profile Dropdown -->
             <li x-data="{ dropdownOpen: false }" class="relative">
-                <a @click="dropdownOpen = !dropdownOpen" @click.away="dropdownOpen = false" class="cursor-pointer select-none">
-                    <img class="h-8 w-8 rounded-full object-cover" src="{{ request.user.profile.avatar }}" alt="Avatar" />
-                    {{ request.user.profile.name }}
-                    <img x-bind:class="dropdownOpen && 'rotate-180 duration-300'" class="w-4" src="https://img.icons8.com/small/32/ffffff/expand-arrow.png" alt="Dropdown" />
-                </a>
-                <div x-show="dropdownOpen" x-cloak class="absolute right-0 bg-white text-black shadow rounded-lg w-40 p-2 z-20"
-                x-transition:enter="duration-300 ease-out"
-                x-transition:enter-start="opacity-0 -translate-y-5 scale-90"
-                x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                <button
+                    @click="dropdownOpen = !dropdownOpen"
+                    @click.away="dropdownOpen = false"
+                    class="flex items-center gap-2 text-gray-900 bg-white hover:bg-gray-100 transition duration-300 py-2 px-4 rounded-md"
+                    aria-haspopup="true"
+                    aria-expanded="dropdownOpen"
                 >
-                    <ul class="hoverlist [&>li>a]:justify-end">
-                        <li><a href="{% url 'profile' %}">My Profile</a></li>
-                        <li><a href="{% url 'profile-edit' %}">Edit Profile</a></li>
-                        <li><a href="{% url 'profile-settings' %}">Settings</a></li>
-                        <li><a href="{% url 'account_logout' %}">Log Out</a></li>
+                    <img class="h-8 w-8 rounded-full object-cover" src="{{ request.user.profile.avatar }}" alt="Avatar" />
+                    <span>{{ request.user.profile.name }}</span>
+                    <img
+                        :class="dropdownOpen ? 'rotate-180 duration-300' : ''"
+                        class="w-4 text-gray-900"
+                        src="https://img.icons8.com/small/32/000000/expand-arrow.png"
+                        alt="Dropdown"
+                    />
+
+                </button>
+                <div
+                    x-show="dropdownOpen"
+                    x-cloak
+                    class="absolute right-0 text-black shadow-lg rounded-lg w-48 mt-2 z-20"
+                    x-transition:enter="duration-300 ease-out"
+                    x-transition:enter-start="opacity-0 -translate-y-5 scale-90"
+                    x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                    role="menu"
+                >
+                    <ul class="flex flex-col gap-2 p-2">
+                        <li><a href="{% url 'profile' %}" class="hover:bg-gray-400 p-2 rounded-md">My Profile</a></li>
+                        <li><a href="{% url 'profile-edit' %}" class="hover:bg-gray-400 p-2 rounded-md">Edit Profile</a></li>
+                        <li><a href="{% url 'profile-settings' %}" class="hover:bg-gray-400 p-2 rounded-md">Settings</a></li>
+                        <li><a href="{% url 'account_logout' %}" class="hover:bg-gray-400 p-2 rounded-md">Log Out</a></li>
                     </ul>
                 </div>
             </li>
             
             {% else %}
-            <li><a href="{% url 'account_login' %}">Login</a></li>
-            <li><a href="{% url 'account_signup' %}?next={% url 'profile-onboarding' %}">Signup</a></li>
+            <li><a href="{% url 'account_login' %}" class="hover:text-gray-300 transition duration-300 py-2 px-4 rounded-md">Login</a></li>
+            <li><a href="{% url 'account_signup' %}?next={% url 'profile-onboarding' %}" class="hover:text-gray-300 transition duration-300 py-2 px-4 rounded-md">Signup</a></li>
             {% endif %}
         </ul>
     </nav>

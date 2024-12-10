@@ -1,36 +1,85 @@
 {% extends "account/base_entrance.html" %}
 {% load i18n %}
 {% load allauth account %}
+
 {% block head_title %}
     {% trans "Sign In" %}
 {% endblock head_title %}
+
 {% block content %}
-    {% element h1 %}
-        {% trans "Sign In" %}
-    {% endelement %}
-    <p>
-        If you have not created an account yet, then please
-    <a href="{% url 'account_signup' %}?next={% url 'profile-onboarding' %}">sign up</a> first.
-    </p>
-    {% url 'account_login' as login_url %}
-    {% element form form=form method="post" action=login_url tags="entrance,login" %}
-        {% slot body %}
-            {% csrf_token %}
-            {% element fields form=form unlabeled=True %}
+<div class="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-md">
+        <h1 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            {% trans "Sign In" %}
+        </h1>
+        <p class="mt-2 text-center text-sm text-gray-600">
+            {% trans "Don't have an account? " %}
+            <a href="{% url 'account_signup' %}?next={% url 'profile-onboarding' %}" class="font-medium text-indigo-600 hover:text-indigo-500">
+                {% trans "Sign up" %}
+            </a>
+        </p>
+    </div>
+
+    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+            {% url 'account_login' as login_url %}
+            {% element form form=form method="post" action=login_url class="space-y-6" tags="entrance,login" %}
+                {% slot body %}
+                    {% csrf_token %}
+                    <div class="space-y-4">
+                        {% for field in form %}
+                            {% if not field.name == 'remember' %}
+                                <div class="space-y-1">
+                                    {{ field.label_tag }}
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <div class="text-red-500">{{ field.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    <div class="flex items-center">
+                        <input id="remember_me" name="remember" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded mr-2 mt-3">
+                        <label for="remember_me" class="block text-sm text-gray-900 mt-2">
+                            {% trans "Remember me" %}
+                        </label>
+                    </div>
+
+                    {% if redirect_field_value %}
+                        <input type="hidden"
+                               name="{{ redirect_field_name }}"
+                               value="{{ redirect_field_value }}" />
+                    {% endif %}
+                {% endslot %}
+
+                {% slot actions %}
+                    <div class="flex justify-center mt-6">
+                        {% element button type="submit" class="w-full max-w-xs flex justify-center py-2 px-4 border border-transparent rounded-full shadow-lg text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-purple-600 hover:to-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transform hover:scale-105 transition-transform duration-200" tags="prominent,login" %}
+                            {% trans "Sign In" %}
+                        {% endelement %}
+                    </div>
+                {% endslot %}
             {% endelement %}
-            {% if redirect_field_value %}
-                <input type="hidden"
-                       name="{{ redirect_field_name }}"
-                       value="{{ redirect_field_value }}" />
+
+            {% if SOCIALACCOUNT_ENABLED %}
+                <div class="mt-6">
+                    <div class="relative">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-gray-300"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-2 bg-white text-gray-500">
+                                {% trans "Or continue with" %}
+                            </span>
+                        </div>
+                    </div>
+
+                    {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+                </div>
             {% endif %}
-        {% endslot %}
-        {% slot actions %}
-            {% element button type="submit" tags="prominent,login" %}
-                {% trans "Sign In" %}
-            {% endelement %}
-        {% endslot %}
-    {% endelement %}
-    {% if SOCIALACCOUNT_ENABLED %}
-        {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
-    {% endif %}
+        </div>
+    </div>
+</div>
 {% endblock content %}
