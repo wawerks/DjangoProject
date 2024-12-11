@@ -27,6 +27,18 @@
                     {% csrf_token %}
                     <div class="space-y-4">
                         <div>
+                            <label for="id_first_name" class="block text-sm font-medium text-gray-700">First Name</label>
+                            <input id="id_first_name" name="first_name" type="text" required 
+                                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" 
+                                   placeholder="Enter your first name">
+                        </div>
+                        <div>
+                            <label for="id_last_name" class="block text-sm font-medium text-gray-700">Last Name</label>
+                            <input id="id_last_name" name="last_name" type="text" required 
+                                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" 
+                                   placeholder="Enter your last name">
+                        </div>
+                        <div>
                             <label for="id_email" class="block text-sm font-medium text-gray-700">Email address</label>
                             <input id="id_email" name="email" type="email" autocomplete="email" required 
                                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" 

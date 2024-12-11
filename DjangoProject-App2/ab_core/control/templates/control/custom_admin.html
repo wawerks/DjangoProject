@@ -10,79 +10,100 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #F4F4F4;
-            color: #4B4B4B;
+            background-color: #f4f4f4;
+            color: #4b4b4b;
         }
 
         /* Navbar Styling */
         .navbar {
-            background-color: #E6E1D3;
+            background-color: #1b2535;
             padding: 15px;
         }
 
         .navbar .navbar-brand {
-            color: #6C4F31;
+            color: #ffffff;
             font-weight: bold;
+            font-size: 20px;
         }
 
         .navbar .navbar-nav .nav-link {
-            color: #6C6C6C;
+            color: #a6b1c1;
             font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .navbar .navbar-nav .nav-link:hover,
+        .navbar .navbar-nav .nav-link.active {
+            color: #ffffff;
         }
 
         .main-content {
             margin-top: 80px;
+            width: 100%;
+            height: 100vh;
+            /* margin-left: auto;
+            margin-right: auto; */
+        }
+
+        /* Table Styling */
+        .table-container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             padding: 20px;
         }
 
-        /* Card Styling */
-        .content-card {
-            border: none;
-            border-radius: 10px;
-            background-color: #FFF;
-            transition: transform 0.3s, box-shadow 0.3s;
-            margin-bottom: 20px;
+        .table thead {
+            background-color: #1b2535;
+            color: #ffffff;
         }
 
-        .content-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .content-card h5 {
+        .table th {
             font-weight: bold;
-            color: #4B4B4B;
         }
 
-        .truncate-text {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+        .table tbody tr:hover {
+            background-color: #f8f9fa;
         }
 
-        .message-label {
-            font-size: 12px;
-            font-weight: bold;
-            color: white;
-            background-color: #6C4F31;
-            padding: 2px 6px;
-            border-radius: 4px;
-            display: inline-block;
-            margin-bottom: 10px;
+        .status-badge {
+            font-size: 14px;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .status-read {
+            background-color: #28a745;
+            color: #ffffff;
+        }
+
+        .status-unread {
+            background-color: #ffc107;
+            color: #1b2535;
         }
 
         .footer {
             text-align: center;
-            color: #4B4B4B;
+            color: #6c757d;
             margin-top: 20px;
             padding: 15px 0;
+            background-color: #ffffff;
+            border-top: 1px solid #dee2e6;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .table {
+                font-size: 14px;
+            }
         }
     </style>
 </head>
 
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light">
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Admin Dashboard</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -92,10 +113,8 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link active" href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-envelope"></i> Messages</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-users"></i> Users</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-cogs"></i> Settings</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'users_list' %}"><i class="fas fa-users"></i> Users</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                 </ul>
             </div>
         </div>
@@ -103,29 +122,37 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        <div class="container mt-3">
-            <h3 class="mb-4">Messages</h3>
-            <div class="row">
-                <div class="col-12">
-                    {% for message in messages %}
-                    <div class="card content-card shadow-lg">
-                        <div class="card-body">
-                            <!-- Label -->
-                            <span class="message-label">{{ message.label }}</span>
-                            <!-- Sender & Receiver -->
-                            <h5 class="card-title">{{ message.sender }} to {{ message.receiver }}</h5>
-                            <!-- Message Content -->
-                            <p class="card-text truncate-text" title="{{ message.content }}"><strong>Message:</strong> {{ message.content|truncatewords:15 }}</p>
-                            <!-- Timestamp -->
-                            <p class="card-text"><strong>Date:</strong> <small class="text-muted">{{ message.timestamp }}</small></p>
-                            <!-- Status -->
-                            <p class="card-text">
-                                <strong>Status:</strong> {% if message.is_read %}Read{% else %}Unread{% endif %}
-                            </p>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
+        <div class="container">
+            <h3 class="mb-4 text-center">Messages Dashboard</h3>
+            <div class="table-container">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Sender</th>
+                            <th>Receiver</th>
+                            <th>Message</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for message in messages %}
+                        <tr data-id="{{ message.id }}">
+                            <td>{{ message.sender }}</td>
+                            <td>{{ message.receiver }}</td>
+                            <td title="{{ message.content }}">{{ message.content|truncatewords:10 }}</td>
+                            <td>{{ message.timestamp }}</td>
+                            <td>
+                                {% if message.is_read %}
+                                <span class="status-badge status-read">Read</span>
+                                {% else %}
+                                <span class="status-badge status-unread">Unread</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -136,6 +163,44 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const rows = document.querySelectorAll('table tbody tr');
+    
+            rows.forEach((row) => {
+                row.addEventListener('click', () => {
+                    const statusBadge = row.querySelector('.status-badge');
+                    const messageId = row.getAttribute('data-id'); // Get the message ID
+    
+                    // Check if the badge is unread
+                    if (statusBadge.classList.contains('status-unread')) {
+                        // Send an HTTP request to the backend to update the status
+                        fetch('/update-status/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': '{{ csrf_token }}' // Include CSRF token for security
+                            },
+                            body: JSON.stringify({ id: messageId })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Update the UI to show the status as "Read"
+                                statusBadge.classList.remove('status-unread');
+                                statusBadge.classList.add('status-read');
+                                statusBadge.textContent = 'Read';
+                            } else {
+                                console.error('Failed to update status:', data.message);
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                    }
+                });
+            });
+        });
+    </script>
+    
 </body>
 
 </html>
