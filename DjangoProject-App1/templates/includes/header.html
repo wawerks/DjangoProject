@@ -1,47 +1,108 @@
 {% load static %}
-<header class="flex items-center justify-between bg-gray-800 h-20 px-8 text-white sticky top-0 z-40">
-    <div>
-        <a class="flex items-center gap-2" href="/">
-            <img class="h-6" src="{% static 'images/logo.svg' %}" alt="Logo"/>
-            <span class="text-lg font-bold">Real-Time Chat</span>
-        </a>
-    </div>
-    <nav class="block relative">
-        <ul class="navitems flex items-center justify-center h-full">
-            {% if request.user.is_authenticated %}
-            <li><a href="{% url 'home' %}">Home</a></li>
-            <li><a href="{% url 'chat' %}" class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                </svg>
-                Chat
-            </a></li>
-            <li x-data="{ dropdownOpen: false }" class="relative">
-                <a @click="dropdownOpen = !dropdownOpen" @click.away="dropdownOpen = false" class="cursor-pointer select-none">
-                    <img class="h-8 w-8 rounded-full object-cover" src="{{ request.user.profile.avatar }}" alt="Avatar" />
-                    {{ request.user.profile.name }}
-                    <img x-bind:class="dropdownOpen && 'rotate-180 duration-300'" class="w-4" src="https://img.icons8.com/small/32/ffffff/expand-arrow.png" alt="Dropdown" />
+<header x-data="{ isOpen: false }" class="bg-gray-800 text-white sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <!-- Logo -->
+            <div class="flex-shrink-0">
+                <a class="flex items-center gap-2" href="/">
+                    <img class="h-8 w-auto" src="{% static 'images/logo.svg' %}" alt="Logo"/>
+                    <span class="text-lg font-bold hidden sm:block">Real-Time Chat</span>
                 </a>
-                <div x-show="dropdownOpen" x-cloak class="absolute right-0 bg-white text-black shadow rounded-lg w-40 p-2 z-20"
-                x-transition:enter="duration-300 ease-out"
-                x-transition:enter-start="opacity-0 -translate-y-5 scale-90"
-                x-transition:enter-end="opacity-100 translate-y-0 scale-100"
-                >
-                    <ul class="hoverlist">
-                        <li><a href="{% url 'profile' request.user.username %}">Profile</a></li>
-                        <li><a href="{% url 'profile-edit' %}">Edit Profile</a></li>
-                        <li><a href="{% url 'profile-settings' %}">Settings</a></li>
-                        <li><a href="{% url 'account_logout' %}">Sign Out</a></li>
-                    </ul>
-                </div>
-            </li>
+            </div>
+
+            <!-- Desktop Menu -->
+            <nav class="hidden sm:block">
+                <ul class="flex items-center space-x-4">
+                    {% if request.user.is_authenticated %}
+                    <li><a href="{% url 'home' %}" class="hover:bg-gray-700 px-3 py-2 rounded-md">Home</a></li>
+                    <li><a href="{% url 'chat' %}" class="hover:bg-gray-700 px-3 py-2 rounded-md flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                        </svg>
+                        Chat
+                    </a></li>
+                    <li x-data="{ dropdownOpen: false }" class="relative">
+                        <button @click="dropdownOpen = !dropdownOpen" @click.away="dropdownOpen = false" 
+                                class="flex items-center gap-2 hover:bg-gray-700 px-3 py-2 rounded-md">
+                            <img class="h-8 w-8 rounded-full object-cover" src="{{ request.user.profile.avatar }}" alt="Avatar" />
+                            <span class="hidden lg:block">{{ request.user.profile.name }}</span>
+                            <svg class="w-4 h-4 transition-transform duration-200" 
+                                 :class="{'rotate-180': dropdownOpen}"
+                                 xmlns="http://www.w3.org/2000/svg" 
+                                 viewBox="0 0 20 20" 
+                                 fill="currentColor">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                        <div x-show="dropdownOpen" 
+                             x-transition:enter="transition ease-out duration-100"
+                             x-transition:enter-start="transform opacity-0 scale-95"
+                             x-transition:enter-end="transform opacity-100 scale-100"
+                             x-transition:leave="transition ease-in duration-75"
+                             x-transition:leave-start="transform opacity-100 scale-100"
+                             x-transition:leave-end="transform opacity-0 scale-95"
+                             class="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded-md shadow-lg py-1">
+                            <a href="{% url 'profile' request.user.username %}" class="block px-4 py-2 hover:bg-gray-100">Profile</a>
+                            <a href="{% url 'profile-edit' %}" class="block px-4 py-2 hover:bg-gray-100">Edit Profile</a>
+                            <a href="{% url 'profile-settings' %}" class="block px-4 py-2 hover:bg-gray-100">Settings</a>
+                            <a href="{% url 'account_logout' %}" class="block px-4 py-2 hover:bg-gray-100">Sign Out</a>
+                        </div>
+                    </li>
+                    {% else %}
+                    <li><a href="{% url 'home' %}" class="hover:bg-gray-700 px-3 py-2 rounded-md">Home</a></li>
+                    <li><a href="{% url 'home' %}" class="hover:bg-gray-700 px-3 py-2 rounded-md">About</a></li>
+                    <li><a href="{% url 'home' %}" class="hover:bg-gray-700 px-3 py-2 rounded-md">Contact</a></li>
+                    <li><a href="{% url 'account_login' %}" class="hover:bg-gray-700 px-3 py-2 rounded-md">Login</a></li>
+                    <li><a href="{% url 'account_signup' %}?next={% url 'profile-onboarding' %}" class="bg-indigo-600 hover:bg-indigo-700 px-3 py-2 rounded-md">Sign up</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+
+            <!-- Mobile menu button -->
+            <div class="sm:hidden">
+                <button @click="isOpen = !isOpen" 
+                        type="button" 
+                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                        aria-controls="mobile-menu" 
+                        aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <!-- Icon when menu is closed -->
+                    <svg :class="{'hidden': isOpen, 'block': !isOpen }" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    <!-- Icon when menu is open -->
+                    <svg :class="{'block': isOpen, 'hidden': !isOpen }" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div x-show="isOpen" 
+         x-transition:enter="transition ease-out duration-100 transform"
+         x-transition:enter-start="opacity-0 scale-95"
+         x-transition:enter-end="opacity-100 scale-100"
+         x-transition:leave="transition ease-in duration-75 transform"
+         x-transition:leave-start="opacity-100 scale-100"
+         x-transition:leave-end="opacity-0 scale-95"
+         class="sm:hidden">
+        <div class="px-2 pt-2 pb-3 space-y-1">
+            {% if request.user.is_authenticated %}
+            <a href="{% url 'home' %}" class="block px-3 py-2 rounded-md text-white hover:bg-gray-700">Home</a>
+            <a href="{% url 'chat' %}" class="block px-3 py-2 rounded-md text-white hover:bg-gray-700">Chat</a>
+            <a href="{% url 'profile' request.user.username %}" class="block px-3 py-2 rounded-md text-white hover:bg-gray-700">Profile</a>
+            <a href="{% url 'profile-edit' %}" class="block px-3 py-2 rounded-md text-white hover:bg-gray-700">Edit Profile</a>
+            <a href="{% url 'profile-settings' %}" class="block px-3 py-2 rounded-md text-white hover:bg-gray-700">Settings</a>
+            <a href="{% url 'account_logout' %}" class="block px-3 py-2 rounded-md text-white hover:bg-gray-700">Sign Out</a>
             {% else %}
-            <li><a href="{% url 'home' %}">Home</a></li>
-            <li><a href="{% url 'home' %}">About</a></li>
-            <li><a href="{% url 'home' %}">Contact</a></li>
-            <li><a href="{% url 'account_login' %}">Login</a></li>
-            <li><a href="{% url 'account_signup' %}?next={% url 'profile-onboarding' %}">Signup</a></li>
+            <a href="{% url 'home' %}" class="block px-3 py-2 rounded-md text-white hover:bg-gray-700">Home</a>
+            <a href="{% url 'home' %}" class="block px-3 py-2 rounded-md text-white hover:bg-gray-700">About</a>
+            <a href="{% url 'home' %}" class="block px-3 py-2 rounded-md text-white hover:bg-gray-700">Contact</a>
+            <a href="{% url 'account_login' %}" class="block px-3 py-2 rounded-md text-white hover:bg-gray-700">Login</a>
+            <a href="{% url 'account_signup' %}?next={% url 'profile-onboarding' %}" class="block px-3 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700">Sign up</a>
             {% endif %}
-        </ul>
-    </nav>
+        </div>
+    </div>
 </header>
