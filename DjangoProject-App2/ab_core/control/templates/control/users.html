@@ -1,105 +1,94 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'control/base_admin.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Users</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+{% block content %}
+<div class="main-content">
+    <div class="container">
+        <h3 class="mb-4 text-center">Users Dashboard</h3>
+        <div class="table-container">
+            <form id="delete-users-form" method="POST" action="{% url 'delete_users' %}">
+                {% csrf_token %}
+                <div class="d-flex justify-content-between mb-3">
+                    <button type="submit" class="btn btn-danger" id="delete-btn" disabled>
+                        <i class="fas fa-trash-alt"></i> Delete Selected
+                    </button>
+                    <span id="selected-count" class="align-self-center text-muted"></span>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="select-all" class="form-check-input"></th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td><input type="checkbox" name="selected_users" value="{{ user.id }}"
+                                    class="form-check-input user-checkbox"></td>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.first_name }}</td>
+                            <td>{{ user.last_name }}</td>
+                            <td>
+                                {% if user.is_active %}
+                                <span class="status-badge status-read">Active</span>
+                                {% else %}
+                                <span class="status-badge status-unread">Inactive</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center">No users found</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
 
-</head>
-<style>
-    #main{
-        height: 80vh;
-    }
-    /* Navbar Styling */
-    .navbar {
-        background-color: #1b2535;
-        padding: 15px;
-    }
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const deleteForm = document.getElementById('delete-users-form');
+        const selectAllCheckbox = document.getElementById('select-all');
+        const userCheckboxes = document.querySelectorAll('.user-checkbox');
+        const deleteBtn = document.getElementById('delete-btn');
+        const selectedCount = document.getElementById('selected-count');
 
-    .navbar .navbar-brand {
-        color: #ffffff;
-        font-weight: bold;
-        font-size: 20px;
-    }
-
-    .navbar .navbar-nav .nav-link {
-        color: #a6b1c1;
-        font-size: 16px;
-        transition: color 0.3s ease;
-    }
-
-    .navbar .navbar-nav .nav-link:hover,
-    .navbar .navbar-nav .nav-link.active {
-        color: #ffffff;
-    }
-
-    .footer {
-            text-align: center;
-            color: #6c757d;
-            margin-top: 20px;
-            padding: 15px 0;
-            background-color: #ffffff;
-            border-top: 1px solid #dee2e6;
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        function updateDeleteButton() {
+            const checkedCount = document.querySelectorAll('.user-checkbox:checked').length;
+            deleteBtn.disabled = checkedCount === 0;
+            selectedCount.textContent = checkedCount > 0 ? `${checkedCount} user(s) selected` : '';
         }
 
-</style>
+        selectAllCheckbox.addEventListener('change', () => {
+            userCheckboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+            updateDeleteButton();
+        });
 
-<body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Admin Dashboard</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'custom_admin' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="{% url 'users_list' %}"><i class="fas fa-users"></i> Users</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+        userCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                const allChecked = [...userCheckboxes].every(cb => cb.checked);
+                const someChecked = [...userCheckboxes].some(cb => cb.checked);
+                selectAllCheckbox.checked = allChecked;
+                selectAllCheckbox.indeterminate = someChecked && !allChecked;
+                updateDeleteButton();
+            });
+        });
 
-    <div id="main" class="container mt-4">
-        <h3>Registered Users</h3>
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for user in users %}
-                <tr>
-                    <td>{{ user.username }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.first_name }}</td>
-                    <td>{{ user.last_name }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="4" class="text-center">No users found</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <!-- Footer -->
-    <div class="footer">
-        <p>&copy; 2024 Real-Time Chat. All rights reserved.</p>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>
+        deleteForm.addEventListener('submit', (e) => {
+            if (!confirm('Are you sure you want to delete the selected users? This action cannot be undone.')) {
+                e.preventDefault();
+            }
+        });
+    });
+</script>
+{% endblock %}

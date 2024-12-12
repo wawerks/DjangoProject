@@ -1,37 +1,40 @@
-{% extends "base.html" %}
+{% extends "layouts/blank.html" %}
 {% load i18n %}
 
 {% block head_title %}
     {% trans "Sign Out" %}
 {% endblock head_title %}
 
-{% block layout %}
+{% block content %}
 <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8">
-        <div>
-            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                {% trans "Sign Out" %}
-            </h2>
-            <p class="mt-2 text-center text-sm text-gray-600">
-                {% trans "Are you sure you want to sign out?" %}
-            </p>
-        </div>
-        
-        <form class="mt-8 space-y-6" method="POST" action="{% url 'account_logout' %}">
-            {% csrf_token %}
-            {% if redirect_field_value %}
-                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-            {% endif %}
+    <div class="max-w-md w-full">
+        <div class="bg-white rounded-lg shadow-lg p-8">
+            <div class="space-y-8">
+                <div>
+                    <h2 class="mt-2 text-center text-3xl font-extrabold text-gray-900">
+                        {% trans "Sign Out" %}
+                    </h2>
+                    <p class="mt-4 text-center text-gray-600">
+                        {% trans 'Are you sure you want to sign out?' %}
+                    </p>
+                </div>
 
-            <div class="flex gap-4">
-                <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                    {% trans "Sign Out" %}
-                </button>
-                <a href="{% url 'home' %}" class="group relative w-full flex justify-center py-2 px-4 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    {% trans "Cancel" %}
-                </a>
+                <form method="post" action="{% url 'account_logout' %}">
+                    {% csrf_token %}
+                    {% if redirect_field_value %}
+                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                    {% endif %}
+                    <div class="flex justify-center space-x-4">
+                        <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            {% trans 'Sign Out' %}
+                        </button>
+                        <a href="{% url 'home' %}" class="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            {% trans 'Cancel' %}
+                        </a>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
 </div>
-{% endblock %}
+{% endblock content %}

@@ -9,6 +9,8 @@ urlpatterns = [
     path('update-status/', views.update_status, name='update_status'),
     path('logout/', views.logout_view, name='logout'),
     path('users/', views.users_list, name='users_list'),
+    path('delete-messages/', views.delete_messages, name='delete_messages'),
+    path('delete-users/', views.delete_users, name='delete_users'),
 
     path('messages/store/', message_api.store_message, name='store_message'),
     path('messages/', message_api.get_messages, name='get_messages'),

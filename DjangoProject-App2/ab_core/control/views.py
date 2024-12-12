@@ -11,6 +11,7 @@ from .models import Message
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
@@ -64,3 +65,21 @@ def update_status(request):
         except Message.DoesNotExist:
             return JsonResponse({'success': False, 'message': 'Message not found'})
     return JsonResponse({'success': False, 'message': 'Invalid request method'})
+
+@csrf_exempt
+def delete_messages(request):
+    if request.method == "POST":
+        message_ids = request.POST.getlist('selected_messages')
+        if message_ids:
+            Message.objects.filter(id__in=message_ids).delete()
+        return redirect('custom_admin')  # Updated to use the correct URL name
+    return redirect('custom_admin')  # Also handle GET requests
+
+@csrf_exempt
+def delete_users(request):
+    if request.method == "POST":
+        user_ids = request.POST.getlist('selected_users')
+        if user_ids:
+            User.objects.filter(id__in=user_ids).delete()
+        return redirect('users_list')
+    return redirect('users_list')
