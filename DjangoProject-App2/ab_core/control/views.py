@@ -21,19 +21,24 @@ def landing_page(request):
 def login_page(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
+        username = request.POST.get('username')
+        password = request.POST.get('password')
 
-            # Authenticate user
-            user = authenticate(request, username=username, password=password)
+        # Check if the username exists
+        if not User.objects.filter(username=username).exists():
+            messages.error(request, 'Username not found.')
+            return render(request, 'control/login.html', {'form': form})
 
-            if user is not None:
-                # Login the user
-                login(request, user)
-                return redirect('custom_admin')  # Redirect to the custom admin page (not default Django admin)
-            else:
-                messages.error(request, 'Invalid username or password.')
+        # Authenticate user
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            # Login the user
+            login(request, user)
+            return redirect('custom_admin')
+        else:
+            messages.error(request, 'Invalid password. Please try again.')
+            return render(request, 'control/login.html', {'form': form})
 
     else:
         form = AuthenticationForm()

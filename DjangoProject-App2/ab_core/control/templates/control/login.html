@@ -11,6 +11,15 @@
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
         <h2 class="text-2xl font-bold text-center text-gray-700 mb-6">Login to Your Account</h2>
 
+            <!-- Display error messages -->
+        {% if messages %}
+        <ul class="mb-4">
+            {% for message in messages %}
+                <li class="text-red-600">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
         <!-- Login Form -->
         <form method="post">
             {% csrf_token %}
