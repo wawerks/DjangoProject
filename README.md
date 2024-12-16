@@ -9,7 +9,6 @@ A secure, real-time chat application built with Django, featuring end-to-end enc
   - REST API endpoints for secure message transmission
   - Instant message delivery
   - Group chat support
-  - Typing indicators
 
 - **Security**
   - End-to-end encryption using Fernet
