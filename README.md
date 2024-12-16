@@ -4,6 +4,19 @@ A secure, real-time chat application built with Django, featuring end-to-end enc
 
 ## 🌟 Features
 
+Web app Installation: 
+
+1.	Clone the Repository in this link: https://github.com/wawerks/DjangoProject.git .
+2.	Navigate to DjangoProject.
+3.	Go to DjangoProject-App1/a_core/settings.py and change the database directory where the DjangoProject-App2 database directory located.
+4.	Ensure that python is properly installed on your device.
+5.	Open integrated Terminal on DjangoProject-App1 and run pip install requirements.txt.
+6.	Run the server on App1, run python manage.py runserver.
+7.	Open integrated Terminal on DjangoProject-App2 and run pip install requirements.txt.
+8.	Navigate to ab_core.
+9.	Run the server on App2, run python manage.py runserver 8081.
+10.	Open the browser with the applications URL.
+
 - **Real-time Communication**
   - WebSocket-based chat using Django Channels
   - REST API endpoints for secure message transmission
