@@ -1,9 +1,6 @@
 # Django Encrypted Real-Time Chat Application
 
 A secure, real-time chat application built with Django, featuring end-to-end encryption and WebSocket communication.
-
-## 🌟 Features
-
 Web app Installation: 
 
 1.	Clone the Repository in this link: https://github.com/wawerks/DjangoProject.git .
@@ -16,6 +13,8 @@ Web app Installation:
 8.	Navigate to ab_core.
 9.	Run the server on App2, run python manage.py runserver 8081.
 10.	Open the browser with the applications URL.
+    
+## 🌟 Features
 
 - **Real-time Communication**
   - WebSocket-based chat using Django Channels
