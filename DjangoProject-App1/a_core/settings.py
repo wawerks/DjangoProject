@@ -116,7 +116,8 @@ ASGI_APPLICATION = "a_core.asgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': Path('C:/Users/Daniela Escuadra/Desktop/DjangoProject/DjangoProject-App2/ab_core/db.sqlite3'),
+        'NAME': Path('C:/Users/Rhowin/Desktop/120 Project/DjangoProject/DjangoProject-App2/ab_core/db.sqlite3'),
+        
     }
 }
 
